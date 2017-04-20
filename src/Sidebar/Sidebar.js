@@ -1,26 +1,29 @@
 import React from 'react';
 
 import './Sidebar.css';
+import Note from '../Note/Note';
 
-const Sidebar = ({notes, handleClick}) => {
-  const renderNotes = Object.keys(notes)
-                            .map(key => {
-                              return (
-                                <li key={key}>
-                                  <button className="sidebar__btn"
-                                          onClick={handleClick}
-                                          id={key}>
-                                    {notes[key].title}
-                                  </button>
-                                </li>
-                              );
-                            });
-
+const Sidebar = ({notes, handleClick, removeNote, loadSamples}) => {
   return (
     <aside className="sidebar">
       <h2>Notes</h2>
+      <button
+        onClick={loadSamples}
+      >
+        Load samples
+      </button>
       <ul className="sidebar__list">
-        {renderNotes}
+        {
+          Object.keys(notes)
+          .map(key =>(
+            <Note
+              key={key}
+              index={key}
+              details={notes[key]}
+              removeNote={removeNote}
+            />
+          ))
+        }
       </ul>
     </aside>
   );

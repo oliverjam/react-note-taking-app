@@ -7,10 +7,18 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
+    this.loadSamples = this.loadSamples.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.updateCurrentNote = this.updateCurrentNote.bind(this);
+    this.removeNote = this.removeNote.bind(this);
     this.state = {
-      currentNote: 'note0',
+      currentNote: null,
+      notes: {},
+    };
+  }
+
+  loadSamples () {
+    this.setState({
       notes: {
         note0: {
           id: 0,
@@ -23,7 +31,7 @@ class App extends Component {
           text: 'More random note text that should be longer than this',
         }
       },
-    };
+    });
   }
 
   updateCurrentNote(e) {
@@ -42,11 +50,25 @@ class App extends Component {
     this.setState({notes});
   }
 
+  removeNote(key) {
+    const notes = {...this.state.notes};
+    notes[key] = null;
+    this.setState({ notes });
+  }
+
   render() {
     return (
       <main className="app">
-        <Sidebar notes={this.state.notes} handleClick={this.updateCurrentNote} />
-        <Editor currentNote={this.state.notes[this.state.currentNote]} handleChange={this.handleChange} />
+        <Sidebar
+          notes={this.state.notes}
+          handleClick={this.updateCurrentNote}
+          removeNote={this.removeNote}
+          loadSamples={this.loadSamples}
+        />
+        <Editor
+          currentNote={this.state.notes[this.state.currentNote]}
+          handleChange={this.handleChange}
+        />
       </main>
 
     );
